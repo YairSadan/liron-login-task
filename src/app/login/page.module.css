@@ -1,44 +1,16 @@
-.main {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  width: 100vw;
 }
 .formTitle {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 300px;
-  height: 300px;
-  border: 1px solid black;
-  border-radius: 5px;
-}
-.button {
-    margin-top: 10px;
-    width: 100px;
-    height: 30px;
+.formContainer {
+    border: 2px solid #ccc;
     border-radius: 5px;
-    border: 1px solid black;
-    background-color: black;
-    color: white;
-}
-.button:hover {
-    background-color: white;
-    color: black;
-    cursor: pointer;
-}
-.button:active {
-    background-color: red;
-    color: white;
-}
-.button:focus {
-    outline: none;
+    padding: 5%;
 }
