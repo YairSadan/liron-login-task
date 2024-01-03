@@ -3,20 +3,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 3rem;
   height: 100%;
   width: 100%;
 }
 
-.form .inputsContainer {
+.inputsContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
   padding: 2rem;
 }
 
-.form .inputsContainer .inputContainer {
+.inputContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,19 +25,20 @@
   position: relative;
 }
 
-.form .inputsContainer .inputContainer .errorInput {
+.errorInput {
   border-color: var(--error-color);
 }
 
-.form .inputsContainer .inputContainer .errorSpan {
+.errorSpan {
   color: var(--error-color);
   font-size: 0.7rem;
   position: absolute;
   top: 1.2rem;
   right: 0;
+  margin-top: 0.5rem;
 }
 
-.form .submitBtn {
+.submitBtn {
   width: 80%;
   height: 2rem;
   border-radius: 0.5rem;
@@ -46,11 +48,11 @@
   transition: background-color 0.3s ease-in-out;
 }
 
-.form .submitBtn:focus {
+.submitBtn:focus {
   outline: none;
   box-shadow: 0 0 0 0.2rem #aaa;
 }
 
-.form .submitBtn:hover {
+.submitBtn:hover {
   background-color: #aaa;
 }

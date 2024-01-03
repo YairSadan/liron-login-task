@@ -5,7 +5,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import styles from './form.module.css';
 import classNames from 'classnames';
-type Props = {};
+import Login from '@/app/utils/Login/Login';
+import { redirect } from 'next/navigation';
+type Props = {
+  checkToken: (token: string) => void;
+};
 const SignInSchema = z.object({
   email: z.string().email({ message: 'כתובת אימייל לא תקינה' }),
   password: z
@@ -15,8 +19,13 @@ const SignInSchema = z.object({
 });
 type SignInSchemaType = z.infer<typeof SignInSchema>;
 
-export default function Form({}: Props) {
-  const onSubmit: SubmitHandler<SignInSchemaType> = (data) => console.log(data);
+export default function Form({ checkToken }: Props) {
+  const onSubmit: SubmitHandler<SignInSchemaType> = async (data) => {
+    const session = await Login(data);
+    // console.log(session);
+    if (!session) throw new Error('No session');
+    checkToken(session.accessToken);
+  };
   const {
     register,
     handleSubmit,
@@ -31,7 +40,9 @@ export default function Form({}: Props) {
             placeholder="אימייל"
             {...register('email')}
           />
-          {errors.email && <span className={styles.errorSpan}>{errors.email.message}</span>}
+          {errors.email && (
+            <span className={styles.errorSpan}>{errors.email.message}</span>
+          )}
         </div>
         <div className={styles.inputContainer}>
           <input
@@ -39,10 +50,14 @@ export default function Form({}: Props) {
             placeholder="סיסמה"
             {...register('password')}
           />
-          {errors.password && <span className={styles.errorSpan}>{errors.password.message}</span>}
+          {errors.password && (
+            <span className={styles.errorSpan}>{errors.password.message}</span>
+          )}
         </div>
       </div>
-      <button className={styles.submitBtn} type="submit">התחבר</button>
+      <button className={styles.submitBtn} type="submit">
+        התחבר
+      </button>
     </form>
   );
 }
