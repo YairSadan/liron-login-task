@@ -1,5 +1,5 @@
 'use client';
-import React, {
+ React, {
   Dispatch,
   SetStateAction,
   createContext,
@@ -40,6 +40,7 @@ export const SessionProvider = ({ children }: Props) => {
       {children}
     </SessionContext.Provider>
   );
+    main
 };
 
 export const useSessionContext = () => useContext(SessionContext);

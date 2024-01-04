@@ -57,9 +57,7 @@ export default function Form({}: Props) {
             placeholder="אימייל"
             {...register('email')}
           />
-          {errors.email && (
-            <span className={styles.errorSpan}>{errors.email.message}</span>
-          )}
+          {errors.email && <span className={styles.errorSpan}>{errors.email.message}</span>}
         </div>
         <div className={styles.inputContainer}>
           <input
@@ -67,9 +65,7 @@ export default function Form({}: Props) {
             placeholder="סיסמה"
             {...register('password')}
           />
-          {errors.password && (
-            <span className={styles.errorSpan}>{errors.password.message}</span>
-          )}
+          {errors.password && <span className={styles.errorSpan}>{errors.password.message}</span>}
         </div>
       </div>
       <button className={styles.submitBtn} type="submit">
