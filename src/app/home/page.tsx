@@ -1,10 +1,12 @@
 'use client';
-import React from 'react';
-import Validate from '../utils/session/Validate';
+import React, { useContext } from 'react';
+import { AuthContext } from '../utils/context/sessionContext';
 
 type Props = {};
 
-export default function page({}: Props) {
+export default function Page({ }: Props) {
+  const { user, getSession, setUser } = useContext(AuthContext);
+  console.log(user);
   return (
     <div>
       <button

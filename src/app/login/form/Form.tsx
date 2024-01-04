@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import styles from './form.module.css';
 import classNames from 'classnames';
-import { SessionContext } from '@/app/utils/context/sessionContext';
+import { AuthContext } from '@/app/utils/context/sessionContext';
 type Props = {
   // checkToken: (token: string) => void;
 };
@@ -19,7 +19,7 @@ const SignInSchema = z.object({
 type SignInSchemaType = z.infer<typeof SignInSchema>;
 
 export default function Form({}: Props) {
-  const { getSession } = useContext(SessionContext);
+  const { user, getSession, setUser } = useContext(AuthContext);
 
   const onSubmit: SubmitHandler<SignInSchemaType> = async ({
     email,
@@ -28,10 +28,7 @@ export default function Form({}: Props) {
     email: string;
     password: string;
   }) => {
-    const session = await getSession(email, password);
-    console.log(session);
-    if (!session) throw new Error('No session');
-
+    await getSession(email, password);
     // checkToken(session.accessToken);
   };
   const {
@@ -48,9 +45,7 @@ export default function Form({}: Props) {
             placeholder="אימייל"
             {...register('email')}
           />
-          {errors.email && (
-            <span className={styles.errorSpan}>{errors.email.message}</span>
-          )}
+          {errors.email && <span className={styles.errorSpan}>{errors.email.message}</span>}
         </div>
         <div className={styles.inputContainer}>
           <input
@@ -58,9 +53,7 @@ export default function Form({}: Props) {
             placeholder="סיסמה"
             {...register('password')}
           />
-          {errors.password && (
-            <span className={styles.errorSpan}>{errors.password.message}</span>
-          )}
+          {errors.password && <span className={styles.errorSpan}>{errors.password.message}</span>}
         </div>
       </div>
       <button className={styles.submitBtn} type="submit">

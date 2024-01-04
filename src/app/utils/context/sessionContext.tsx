@@ -1,25 +1,44 @@
 'use client';
-import React, { createContext, useState } from 'react';
+import React, { Dispatch, ReactNode, createContext, useContext, useState } from 'react';
 import Login from '../Login/Login';
 
-type GetSession = (email:string, password: string) => Promise<string>;
+type User = { email: string; password: string };
+type Session = { user: User; accessToken: string };
 
-export const SessionContext = createContext({});
+export const AuthContext = createContext({
+  user: { email: '', password: '' },
+  getSession: async (email: string, password: string) => {},
+  setUser: (user: User) => {},
+});
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User>({ email: '', password: '' });
 
-type Props = {
-  children: React.ReactNode;
-};
+  const getSession = async (email: string, password: string) => {
+    try {
+      console.log(email)
+      const res = await Login({ email, password });
+      console.log(res);
+      if (res) {
+        setUser({ email, password });
+        setSession(res);
+      } else {
+        console.log('adfasdf')
+        setSession(null);
 
-export const SessionProvider = ({ children }: Props) => {
-  const getSession: GetSession = async (email: string, password: string) => {
-    console.log(email, password);
-    const session = await Login({ email, password });
-    return session;
+        setUser({ email: '', password: '' });
+      }
+    } catch (error) {
+      console.log(error);
+      setSession(null);
+      setUser({ email: '', password: '' });
+    }
   };
 
-  return (
-    <SessionContext.Provider value={{ getSession }}>
-      {children}
-    </SessionContext.Provider>
-  );
+  const contextValue = {
+    user,
+    getSession,
+    setUser,
+  };
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
