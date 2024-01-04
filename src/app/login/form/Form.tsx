@@ -1,14 +1,13 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import styles from './form.module.css';
 import classNames from 'classnames';
-import Login from '@/app/utils/Login/Login';
-import { redirect } from 'next/navigation';
+import { SessionContext } from '@/app/utils/context/sessionContext';
 type Props = {
-  checkToken: (token: string) => void;
+  // checkToken: (token: string) => void;
 };
 const SignInSchema = z.object({
   email: z.string().email({ message: 'כתובת אימייל לא תקינה' }),
@@ -19,12 +18,21 @@ const SignInSchema = z.object({
 });
 type SignInSchemaType = z.infer<typeof SignInSchema>;
 
-export default function Form({ checkToken }: Props) {
-  const onSubmit: SubmitHandler<SignInSchemaType> = async (data) => {
-    const session = await Login(data);
-    // console.log(session);
+export default function Form({}: Props) {
+  const { getSession } = useContext(SessionContext);
+
+  const onSubmit: SubmitHandler<SignInSchemaType> = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
+    const session = await getSession(email, password);
+    console.log(session);
     if (!session) throw new Error('No session');
-    checkToken(session.accessToken);
+
+    // checkToken(session.accessToken);
   };
   const {
     register,

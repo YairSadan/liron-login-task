@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 
 type Props = {
   email: string,
@@ -15,12 +16,14 @@ export default async function Login({email, password}: Props) {
         username: email,
         pwd: password,
       }),
+      credentials: 'include'
     });
+
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
-    const user = await res.json();
-    return user;
+    const session = await res.json();
+    return session;
   } catch (error) {
     console.error("Error:", error);
     throw error;
