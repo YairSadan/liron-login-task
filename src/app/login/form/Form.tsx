@@ -5,7 +5,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import styles from './form.module.css';
 import classNames from 'classnames';
-import { SessionContext } from '@/app/utils/context/sessionContext';
+import {
+  SessionContext,
+  useSessionContext,
+} from '@/app/utils/context/sessionContext';
+import Login from '@/app/utils/Login/Login';
+import Validate from '@/app/utils/session/Validate';
+import { setEngine } from 'crypto';
+import { useRouter } from 'next/navigation';
 type Props = {
   // checkToken: (token: string) => void;
 };
@@ -19,7 +26,8 @@ const SignInSchema = z.object({
 type SignInSchemaType = z.infer<typeof SignInSchema>;
 
 export default function Form({}: Props) {
-  const { getSession } = useContext(SessionContext);
+  const { setSession } = useSessionContext();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<SignInSchemaType> = async ({
     email,
@@ -28,11 +36,12 @@ export default function Form({}: Props) {
     email: string;
     password: string;
   }) => {
-    const session = await getSession(email, password);
-    console.log(session);
+    const session: SessionModel = await Login({ email, password });
+    setSession(session);
     if (!session) throw new Error('No session');
-
-    // checkToken(session.accessToken);
+    const token = session.accessToken;
+    await Validate({ token });
+    router.push('/home');
   };
   const {
     register,
