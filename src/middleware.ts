@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   //   console.log('first')
   //   return NextResponse.redirect(new URL('/home', request.url))
   // }
-  console.log('from middlewar ', request.headers)
+  console.log('from middlewar ')
 }
 
 

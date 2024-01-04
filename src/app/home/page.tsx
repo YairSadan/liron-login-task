@@ -1,32 +1,26 @@
 'use client';
-import React, { useContext } from 'react';
-import { AuthContext } from '../utils/context/sessionContext';
+import React from 'react';
+import { useSessionContext } from '../utils/context/sessionContext';
 
 type Props = {};
 
-export default function Page({ }: Props) {
-  const { user, getSession, setUser } = useContext(AuthContext);
-  console.log(user);
+export default function HomePage({}: Props) {
+  const { session } = useSessionContext();
+  console.log(session);
   return (
     <div>
       <button
         onClick={async () => {
           await fetch('https://rest-api.lamdem.co.il/v1/ping-auth', {
             method: 'HEAD',
+            headers: {
+              Authorization: `Bearer ${session?.accessToken}` 
+            },
             credentials: 'include',
           });
         }}>
         {' '}
         Ping Auth
-      </button>
-      <button
-        onClick={async () => {
-          await fetch('https://jsonplaceholder.typicode.com/posts', {
-            method: 'GET',
-          });
-        }}>
-        {' '}
-        Gwt post
       </button>
       home
     </div>
